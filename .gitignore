@@ -1,0 +1,42 @@
+# Logs directory
+logs/
+*.log
+
+# Sensitive Configuration  
+config.php
+*.env
+*.env.*
+
+# Database Credentials
+assets/functions/config.php
+
+# Temporary Files
+ARCHIVE/temp-files/
+ARCHIVE/backups/
+*.tmp
+*.bak.*
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# PHP Composer
+vendor/
+composer.lock
+
+# Node modules
+node_modules/
+
+# Development Files
+test_*.php
+debug_*.php
+*_test.php
+
+# System Files
+.htaccess.backup

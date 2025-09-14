@@ -1,0 +1,280 @@
+                      <!-- Settings & AI Tab -->
+                      <div class="tab-pane fade" id="settings" role="tabpanel">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="card">
+                              <div class="card-header">
+                                <h5><i class="fa fa-brain"></i> Neural Brain & AI Settings</h5>
+                              </div>
+                              <div class="card-body">
+                                <form id="ai-settings-form">
+                                  <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="neural-brain-enabled">
+                                    <label class="form-check-label" for="neural-brain-enabled">
+                                      Enable Neural Brain Learning
+                                    </label>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Learning Aggressiveness</label>
+                                    <select class="form-control" id="learning-mode">
+                                      <option value="conservative">Conservative</option>
+                                      <option value="moderate" selected>Moderate</option>
+                                      <option value="aggressive">Aggressive</option>
+                                    </select>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Memory Retention (days)</label>
+                                    <input type="number" class="form-control" id="memory-retention" value="90">
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>GPT Model</label>
+                                    <select class="form-control" id="gpt-model">
+                                      <option value="gpt-4o">GPT-4o (Recommended)</option>
+                                      <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                                      <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                    </select>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>AI Confidence Threshold (%)</label>
+                                    <input type="number" class="form-control" id="confidence-threshold" value="75" min="50" max="95">
+                                    <small class="text-muted">Minimum confidence required for AI recommendations</small>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="card">
+                              <div class="card-header">
+                                <h5><i class="fa fa-sliders-h"></i> Transfer Algorithm Settings</h5>
+                              </div>
+                              <div class="card-body">
+                                <form id="algorithm-settings-form">
+                                  <div class="form-group">
+                                    <label>Minimum Source Stock</label>
+                                    <input type="number" class="form-control" id="min-source-stock" value="5">
+                                    <small class="text-muted">Minimum stock required at source store</small>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Max Contribution Per Store</label>
+                                    <input type="number" class="form-control" id="max-contribution" value="2">
+                                    <small class="text-muted">Maximum items per product from single store</small>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Buffer Percentage (%)</label>
+                                    <input type="number" class="form-control" id="buffer-percentage" value="20">
+                                    <small class="text-muted">Safety buffer for stock levels</small>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Minimum Transfer Value ($)</label>
+                                    <input type="number" class="form-control" id="min-transfer-value" value="50" step="0.01">
+                                    <small class="text-muted">Minimum total value to justify transfer</small>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Shipping Weight Threshold (kg)</label>
+                                    <input type="number" class="form-control" id="weight-threshold" value="2.5" step="0.1">
+                                    <small class="text-muted">Weight threshold for shipping cost optimization</small>
+                                  </div>
+                                  
+                                  <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="respect-pack-outers" checked>
+                                    <label class="form-check-label" for="respect-pack-outers">
+                                      Respect Pack Outer Quantities
+                                    </label>
+                                  </div>
+                                  
+                                  <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="balance-categories" checked>
+                                    <label class="form-check-label" for="balance-categories">
+                                      Balance Product Categories
+                                    </label>
+                                  </div>
+                                </form>
+                                
+                                <button class="btn btn-success btn-block mt-3" onclick="saveSettings()">
+                                  <i class="fa fa-save"></i> Save All Settings
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <!-- Advanced Settings -->
+                        <div class="row mt-4">
+                          <div class="col-md-12">
+                            <div class="card">
+                              <div class="card-header">
+                                <h5><i class="fa fa-cog"></i> Advanced Transfer Parameters</h5>
+                              </div>
+                              <div class="card-body">
+                                <div class="row">
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <label>Sales Velocity Weight</label>
+                                      <input type="range" class="form-control-range" id="velocity-weight" min="0" max="100" value="30">
+                                      <small class="text-muted">Importance of sales velocity in decisions</small>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <label>Stock Level Weight</label>
+                                      <input type="range" class="form-control-range" id="stock-weight" min="0" max="100" value="40">
+                                      <small class="text-muted">Importance of current stock levels</small>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <div class="form-group">
+                                      <label>Profit Margin Weight</label>
+                                      <input type="range" class="form-control-range" id="profit-weight" min="0" max="100" value="30">
+                                      <small class="text-muted">Importance of product profitability</small>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Scheduling & Automation Tab -->
+                      <div class="tab-pane fade" id="schedule" role="tabpanel">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="card">
+                              <div class="card-header">
+                                <h5><i class="fa fa-calendar"></i> Automated Scheduling</h5>
+                              </div>
+                              <div class="card-body">
+                                <form id="schedule-form">
+                                  <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" id="auto-schedule-enabled">
+                                    <label class="form-check-label" for="auto-schedule-enabled">
+                                      Enable Automatic Transfers
+                                    </label>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Schedule Day</label>
+                                    <select class="form-control" id="schedule-day">
+                                      <option value="monday" selected>Monday</option>
+                                      <option value="tuesday">Tuesday</option>
+                                      <option value="wednesday">Wednesday</option>
+                                      <option value="thursday">Thursday</option>
+                                      <option value="friday">Friday</option>
+                                      <option value="saturday">Saturday</option>
+                                      <option value="sunday">Sunday</option>
+                                      <option value="daily">Daily</option>
+                                    </select>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Schedule Time</label>
+                                    <input type="time" class="form-control" id="schedule-time" value="06:00">
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Auto-Balance Mode</label>
+                                    <select class="form-control" id="balance-mode">
+                                      <option value="conservative">Conservative (Small adjustments)</option>
+                                      <option value="moderate" selected>Moderate (Balanced approach)</option>
+                                      <option value="aggressive">Aggressive (Large rebalancing)</option>
+                                    </select>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                    <label>Target Outlets for Auto-Balance</label>
+                                    <select class="form-control" id="auto-balance-outlets" multiple>
+                                      <option value="all">All Outlets</option>
+                                    </select>
+                                    <small class="text-muted">Hold Ctrl/Cmd to select multiple outlets</small>
+                                  </div>
+                                  
+                                  <button type="button" class="btn btn-primary btn-block" onclick="updateCronJob()">
+                                    <i class="fa fa-clock"></i> Update Cron Job
+                                  </button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="card">
+                              <div class="card-header">
+                                <h5><i class="fa fa-robot"></i> AI Learning & Progress</h5>
+                              </div>
+                              <div class="card-body">
+                                <div id="ai-progress">
+                                  <p><strong>Neural Brain Status:</strong> <span id="neural-status" class="badge badge-info">Initializing...</span></p>
+                                  <p><strong>Total Memories:</strong> <span id="total-memories">0</span></p>
+                                  <p><strong>Success Rate:</strong> <span id="success-rate" class="badge badge-success">0%</span></p>
+                                  <p><strong>Learning Trend:</strong> <span id="learning-trend" class="badge badge-warning">Stable</span></p>
+                                  
+                                  <div class="progress mb-3">
+                                    <div class="progress-bar bg-info" id="learning-progress" style="width: 0%"></div>
+                                  </div>
+                                  <small class="text-muted">AI Learning Progress</small>
+                                  
+                                  <hr>
+                                  
+                                  <div class="btn-group btn-block">
+                                    <button class="btn btn-warning btn-sm" onclick="resetNeuralBrain()">
+                                      <i class="fa fa-refresh"></i> Reset AI
+                                    </button>
+                                    
+                                    <button class="btn btn-info btn-sm" onclick="exportLearning()">
+                                      <i class="fa fa-download"></i> Export Data
+                                    </button>
+                                    
+                                    <button class="btn btn-primary btn-sm" onclick="testAI()">
+                                      <i class="fa fa-play"></i> Test AI
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <!-- Cron Status -->
+                        <div class="row mt-4">
+                          <div class="col-md-12">
+                            <div class="card">
+                              <div class="card-header">
+                                <h5><i class="fa fa-server"></i> Cron Job Status & Management</h5>
+                              </div>
+                              <div class="card-body">
+                                <div id="cron-status">
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <p><strong>Current Cron Status:</strong> <span id="cron-active" class="badge badge-secondary">Checking...</span></p>
+                                      <p><strong>Last Run:</strong> <span id="last-cron-run">Never</span></p>
+                                      <p><strong>Next Scheduled:</strong> <span id="next-cron-run">Not scheduled</span></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <p><strong>Auto-Balance Status:</strong> <span id="balance-status" class="badge badge-info">Monitoring</span></p>
+                                      <p><strong>Transfers This Week:</strong> <span id="weekly-transfers">0</span></p>
+                                      <p><strong>AI Confidence:</strong> <span id="ai-confidence">85%</span></p>
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="alert alert-info mt-3">
+                                    <h6><i class="fa fa-lightbulb"></i> Auto-Balance Learning</h6>
+                                    <p class="mb-0">The system will start with more aggressive rebalancing as stores adjust, 
+                                    then reduce transfer frequency as the AI learns optimal patterns. Weight and cost 
+                                    thresholds ensure only profitable transfers are executed.</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>

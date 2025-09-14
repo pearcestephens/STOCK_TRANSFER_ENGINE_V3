@@ -1,0 +1,33 @@
+{
+  "name": "newtransferv3/nuclear-test-suite",
+  "description": "Nuclear-grade test suite for NewTransferV3 Transfer Engine",
+  "type": "project",
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "mockery/mockery": "^1.4",
+    "guzzlehttp/guzzle": "^7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "symfony/var-dumper": "^5.0",
+    "friendsofphp/php-cs-fixer": "^3.0",
+    "symfony/dom-crawler": "^6.4",
+    "symfony/css-selector": "^6.4",
+    "phpunit/php-code-coverage": "^9.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "NewTransferV3\\": ""
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test-database": "vendor/bin/phpunit --group database",
+    "test-transfer": "vendor/bin/phpunit --group transfer_engine", 
+    "test-dashboard": "vendor/bin/phpunit --group dashboard",
+    "test-ai": "vendor/bin/phpunit --group neural_brain",
+    "test-performance": "vendor/bin/phpunit --group performance",
+    "test-security": "vendor/bin/phpunit --group security",
+    "test-nuclear": "vendor/bin/phpunit --verbose --colors=always"
+  }
+}

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔗 Turbo Transfer System - Quick Access Links</title>
+    
+    <!-- Bootstrap 4.6 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 0;
+            min-height: 100vh;
+        }
+        
+        .links-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+        
+        .link-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #007bff;
+            transition: all 0.3s ease;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .link-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .link-description {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .url-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #495057;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .url-box:hover {
+            border-color: #007bff;
+            background: #e3f2fd;
+        }
+        
+        .btn-open {
+            background: linear-gradient(45deg, #007bff, #0056b3);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-open:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+            color: white;
+        }
+        
+        .btn-copy {
+            background: #28a745;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-copy:hover {
+            background: #218838;
+            transform: scale(1.05);
+            color: white;
+        }
+        
+        .dashboard { border-left-color: #007bff; }
+        .debugger { border-left-color: #dc3545; }
+        .api { border-left-color: #28a745; }
+        .engine { border-left-color: #ffc107; }
+        .docs { border-left-color: #6f42c1; }
+        
+        .copy-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+            z-index: 9999;
+            display: none;
+        }
+        
+        .system-info {
+            background: #17a2b8;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .feature-badge {
+            background: #e8f4f8;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            border: 1px solid #b3d9e6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- CIS STANDARD CONTAINER STRUCTURE -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="links-container">
+        
+        <div class="header">
+            <h1><i class="fas fa-rocket text-primary"></i> Turbo Transfer System</h1>
+            <h3>🔗 Quick Access Links</h3>
+            <p class="text-muted">Click to open or copy URLs for the complete AI-powered transfer system</p>
+        </div>
+        
+        <div class="system-info">
+            <h5><i class="fas fa-info-circle"></i> System Status: READY FOR USE</h5>
+            <p class="mb-0">Complete autonomous transfer system with AI decision-making, route optimization, and full debugging transparency</p>
+        </div>
+        
+        <!-- Dashboard Link -->
+        <div class="link-card dashboard">
+            <div class="link-title">
+                <i class="fas fa-tachometer-alt text-primary"></i> Main Dashboard
+            </div>
+            <div class="link-description">
+                Real-time analytics dashboard with live monitoring, interactive maps, cost analysis, and route optimization visualization
+            </div>
+            <div class="url-box" onclick="copyUrl(this)">
+                https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/turbo_dashboard.html
+            </div>
+            <a href="https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/turbo_dashboard.html" target="_blank" class="btn btn-open">
+                <i class="fas fa-external-link-alt"></i> Open Dashboard
+            </a>
+            <button class="btn btn-copy" onclick="copyUrl('https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/turbo_dashboard.html')">
+                <i class="fas fa-copy"></i> Copy URL
+            </button>
+        </div>
+        
+        <!-- Debugger Link -->
+        <div class="link-card debugger">
+            <div class="link-title">
+                <i class="fas fa-bug text-danger"></i> Debug Interface
+            </div>
+            <div class="link-description">
+                Advanced debugging interface with decision timeline, performance charts, and complete AI decision transparency
+            </div>
+            <div class="url-box" onclick="copyUrl(this)">
+                https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/turbo_debugger.php
+            </div>
+            <a href="https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/turbo_debugger.php" target="_blank" class="btn btn-open">
+                <i class="fas fa-external-link-alt"></i> Open Debugger
+            </a>
+            <button class="btn btn-copy" onclick="copyUrl('https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/turbo_debugger.php')">
+                <i class="fas fa-copy"></i> Copy URL
+            </button>
+        </div>
+        
+        <!-- API Link -->
+        <div class="link-card api">
+            <div class="link-title">
+                <i class="fas fa-code text-success"></i> API Endpoint
+            </div>
+            <div class="link-description">
+                Backend API for all dashboard operations including analysis triggers, route optimization, and data exports
+            </div>
+            <div class="url-box" onclick="copyUrl(this)">
+                https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/turbo_api.php
+            </div>
+            <a href="https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/turbo_api.php" target="_blank" class="btn btn-open">
+                <i class="fas fa-external-link-alt"></i> Open API
+            </a>
+            <button class="btn btn-copy" onclick="copyUrl('https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/turbo_api.php')">
+                <i class="fas fa-copy"></i> Copy URL
+            </button>
+        </div>
+        
+        <!-- Engine Link -->
+        <div class="link-card engine">
+            <div class="link-title">
+                <i class="fas fa-brain text-warning"></i> AI Engine Source
+            </div>
+            <div class="link-description">
+                Core AI engine source code (674 lines) with autonomous decision-making, route optimization, and pack rules integration
+            </div>
+            <div class="url-box" onclick="copyUrl(this)">
+                https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/TurboAutonomousTransferEngine.php
+            </div>
+            <a href="https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/TurboAutonomousTransferEngine.php" target="_blank" class="btn btn-open">
+                <i class="fas fa-external-link-alt"></i> View Engine
+            </a>
+            <button class="btn btn-copy" onclick="copyUrl('https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/TurboAutonomousTransferEngine.php')">
+                <i class="fas fa-copy"></i> Copy URL
+            </button>
+        </div>
+        
+        <!-- Documentation Link -->
+        <div class="link-card docs">
+            <div class="link-title">
+                <i class="fas fa-book text-info"></i> Complete Documentation
+            </div>
+            <div class="link-description">
+                Complete implementation guide with system overview, features, quick start instructions, and business value analysis
+            </div>
+            <div class="url-box" onclick="copyUrl(this)">
+                https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/TURBO_IMPLEMENTATION_GUIDE.md
+            </div>
+            <a href="https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/TURBO_IMPLEMENTATION_GUIDE.md" target="_blank" class="btn btn-open">
+                <i class="fas fa-external-link-alt"></i> View Docs
+            </a>
+            <button class="btn btn-copy" onclick="copyUrl('https://staff.vapeshed.co.nz/assets/cron/NewTransferV3/TURBO_IMPLEMENTATION_GUIDE.md')">
+                <i class="fas fa-copy"></i> Copy URL
+            </button>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-badge">
+                <i class="fas fa-brain"></i><br>
+                <strong>Autonomous AI</strong><br>
+                Complete decision-making
+            </div>
+            <div class="feature-badge">
+                <i class="fas fa-route"></i><br>
+                <strong>Route Optimization</strong><br>
+                Efficient delivery planning
+            </div>
+            <div class="feature-badge">
+                <i class="fas fa-search"></i><br>
+                <strong>Decision Transparency</strong><br>
+                Full debugging visibility
+            </div>
+            <div class="feature-badge">
+                <i class="fas fa-chart-line"></i><br>
+                <strong>Real-time Analytics</strong><br>
+                Live performance monitoring
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <p class="text-muted">
+                <i class="fas fa-info-circle"></i> 
+                All links point to your live Turbo Transfer system on staff.vapeshed.co.nz
+            </p>
+        </div>
+        
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END CIS STANDARD CONTAINER -->
+
+<div class="copy-success" id="copySuccess">
+    <i class="fas fa-check"></i> URL copied to clipboard!
+</div>
+
+<script>
+/**
+ * Copy URL to clipboard
+ */
+function copyUrl(element) {
+    let url;
+    
+    if (typeof element === 'string') {
+        url = element;
+    } else {
+        url = element.textContent.trim();
+    }
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(url).then(function() {
+        // Show success message
+        const successDiv = document.getElementById('copySuccess');
+        successDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            successDiv.style.display = 'none';
+        }, 2000);
+        
+    }).catch(function(err) {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        
+        // Show success message
+        const successDiv = document.getElementById('copySuccess');
+        successDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            successDiv.style.display = 'none';
+        }, 2000);
+    });
+}
+
+// Add click-to-copy functionality to all URL boxes
+document.querySelectorAll('.url-box').forEach(box => {
+    box.style.cursor = 'pointer';
+    box.title = 'Click to copy URL';
+});
+</script>
+
+</body>
+</html>

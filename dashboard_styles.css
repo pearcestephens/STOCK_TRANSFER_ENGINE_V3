@@ -1,0 +1,296 @@
+   <!-- ######### CSS BEGINS HERE ######### -->
+   <!-- CIS Content Framework - Container-scoped CSS that doesn't override globals -->
+   <link rel="stylesheet" href="../../../assets/css/cis-content-framework.css">
+   
+   <style>
+   /* Custom Dashboard Styles - Transfer Control Center */
+   .cis-content {
+     font-size: 14px;
+   }
+   
+   .card {
+     border: 1px solid #dee2e6;
+     box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+     border-radius: 8px;
+   }
+   
+   .card-header {
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+     color: white;
+     border-bottom: 2px solid #5a67d8;
+     border-radius: 8px 8px 0 0 !important;
+   }
+   
+   .card-header h5 {
+     margin: 0;
+     font-weight: 600;
+   }
+   
+   .nav-tabs {
+     border-bottom: 2px solid #e9ecef;
+   }
+   
+   .nav-tabs .nav-link {
+     color: #495057;
+     border: 1px solid transparent;
+     font-weight: 500;
+     padding: 12px 20px;
+   }
+   
+   .nav-tabs .nav-link.active {
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+     color: white;
+     border-color: #5a67d8;
+     border-radius: 6px 6px 0 0;
+   }
+   
+   .nav-tabs .nav-link:hover:not(.active) {
+     background-color: #f8f9fa;
+     border-color: #dee2e6;
+   }
+   
+   .btn-primary {
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+     border-color: #5a67d8;
+     font-weight: 500;
+   }
+   
+   .btn-primary:hover {
+     background: linear-gradient(135deg, #5a67d8 0%, #6b5b95 100%);
+     transform: translateY(-1px);
+     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+   }
+   
+   .btn-success {
+     background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+   }
+   
+   .btn-warning {
+     background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+   }
+   
+   .btn-info {
+     background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+   }
+   
+   #transfer-output {
+     white-space: pre-wrap;
+     font-size: 12px;
+     line-height: 1.4;
+     background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+     border: 1px solid #4a5568;
+   }
+   
+   .file-item {
+     cursor: pointer;
+     padding: 12px;
+     border: 1px solid #dee2e6;
+     margin-bottom: 6px;
+     border-radius: 6px;
+     transition: all 0.2s ease;
+   }
+   
+   .file-item:hover {
+     background-color: #f8f9fa;
+     border-color: #adb5bd;
+     transform: translateX(2px);
+   }
+   
+   .file-item.selected {
+     background-color: #e3f2fd;
+     border-color: #2196f3;
+     box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+   }
+   
+   .progress {
+     height: 28px;
+     border-radius: 14px;
+     overflow: hidden;
+   }
+   
+   .progress-bar {
+     font-size: 13px;
+     line-height: 28px;
+     font-weight: 500;
+     background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
+   }
+   
+   .status-running {
+     animation: pulse 2s infinite;
+   }
+   
+   @keyframes pulse {
+     0% { opacity: 1; }
+     50% { opacity: 0.6; }
+     100% { opacity: 1; }
+   }
+   
+   /* Status Cards */
+   .card.bg-primary {
+     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+   }
+   
+   .card.bg-success {
+     background: linear-gradient(135deg, #48bb78 0%, #38a169 100%) !important;
+   }
+   
+   .card.bg-info {
+     background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%) !important;
+   }
+   
+   .card.bg-warning {
+     background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%) !important;
+   }
+   
+   /* File Viewer */
+   #file-viewer {
+     font-family: 'Courier New', Consolas, monospace;
+     background: #f8f9fa;
+     border: 2px solid #dee2e6;
+     border-radius: 6px;
+   }
+   
+   #file-viewer pre {
+     background: transparent;
+     border: none;
+     margin: 0;
+     padding: 0;
+   }
+   
+   /* Form Styling */
+   .form-control {
+     border-radius: 6px;
+     border: 2px solid #e2e8f0;
+   }
+   
+   .form-control:focus {
+     border-color: #667eea;
+     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+   }
+   
+   .form-check-input:checked {
+     background-color: #667eea;
+     border-color: #667eea;
+   }
+   
+   /* Tables */
+   .table-striped tbody tr:nth-of-type(odd) {
+     background-color: rgba(102, 126, 234, 0.05);
+   }
+   
+   .table th {
+     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+     font-weight: 600;
+     border-top: none;
+   }
+   
+   /* Badges */
+   .badge {
+     font-size: 11px;
+     font-weight: 500;
+     padding: 4px 8px;
+   }
+   
+   .badge-success {
+     background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+   }
+   
+   .badge-warning {
+     background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+   }
+   
+   .badge-info {
+     background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+   }
+   
+   .badge-danger {
+     background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+   }
+   
+   /* Alerts */
+   .alert {
+     border-radius: 8px;
+     border: none;
+   }
+   
+   .alert-info {
+     background: linear-gradient(135deg, rgba(66, 153, 225, 0.1) 0%, rgba(49, 130, 206, 0.1) 100%);
+     border-left: 4px solid #4299e1;
+   }
+   
+   /* Range Sliders */
+   .form-control-range {
+     height: 6px;
+   }
+   
+   .form-control-range::-webkit-slider-thumb {
+     background: #667eea;
+   }
+   
+   .form-control-range::-moz-range-thumb {
+     background: #667eea;
+   }
+   
+   /* Responsive Design */
+   @media (max-width: 768px) {
+     .nav-tabs .nav-link {
+       padding: 8px 12px;
+       font-size: 13px;
+     }
+     
+     .card-body {
+       padding: 15px;
+     }
+     
+     #transfer-output {
+       height: 200px;
+     }
+     
+     #file-viewer {
+       height: 300px;
+     }
+   }
+   
+   /* Loading States */
+   .loading {
+     position: relative;
+   }
+   
+   .loading::after {
+     content: '';
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     width: 20px;
+     height: 20px;
+     margin: -10px 0 0 -10px;
+     border: 2px solid #f3f3f3;
+     border-top: 2px solid #667eea;
+     border-radius: 50%;
+     animation: spin 1s linear infinite;
+   }
+   
+   @keyframes spin {
+     0% { transform: rotate(0deg); }
+     100% { transform: rotate(360deg); }
+   }
+   
+   /* Scrollbars */
+   ::-webkit-scrollbar {
+     width: 8px;
+   }
+   
+   ::-webkit-scrollbar-track {
+     background: #f1f1f1;
+   }
+   
+   ::-webkit-scrollbar-thumb {
+     background: #667eea;
+     border-radius: 4px;
+   }
+   
+   ::-webkit-scrollbar-thumb:hover {
+     background: #5a67d8;
+   }
+   </style>
+   <!-- ######### CSS ENDS HERE ######### -->

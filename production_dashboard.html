@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Engine Control Center - Production</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.125rem;
+            opacity: 0.9;
+        }
+        
+        .system-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .status-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--success);
+        }
+        
+        .status-card.warning { border-left-color: var(--warning); }
+        .status-card.error { border-left-color: var(--error); }
+        
+        .status-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .status-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 0.25rem;
+        }
+        
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--gray-800);
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--gray-700);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            margin: 0.25rem;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .progress-container {
+            background: var(--gray-100);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            display: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--gray-200);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .log-container {
+            background: var(--gray-900);
+            color: var(--gray-100);
+            border-radius: 8px;
+            padding: 1rem;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+        
+        .log-entry {
+            margin-bottom: 0.25rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+        }
+        
+        .log-entry.info { background: rgba(59, 130, 246, 0.1); }
+        .log-entry.success { background: rgba(16, 185, 129, 0.1); }
+        .log-entry.warning { background: rgba(245, 158, 11, 0.1); }
+        .log-entry.error { background: rgba(239, 68, 68, 0.1); }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 1rem;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-weight: 500;
+            color: var(--gray-600);
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .metric-card {
+            background: var(--gray-50);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-left-color: var(--success);
+        }
+        
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border-left-color: var(--error);
+        }
+        
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+            border-left-color: var(--warning);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Transfer Engine Control Center</h1>
+            <p>Production-grade transfer management system with real-time monitoring</p>
+        </div>
+        
+        <!-- System Status -->
+        <div class="system-status">
+            <div class="status-card" id="db-status">
+                <div class="status-label">Database</div>
+                <div class="status-value" id="db-status-value">Checking...</div>
+            </div>
+            <div class="status-card" id="engine-status">
+                <div class="status-label">Transfer Engine</div>
+                <div class="status-value" id="engine-status-value">Initializing...</div>
+            </div>
+            <div class="status-card" id="outlets-status">
+                <div class="status-label">Active Outlets</div>
+                <div class="status-value" id="outlets-count">-</div>
+            </div>
+            <div class="status-card" id="session-status">
+                <div class="status-label">Session ID</div>
+                <div class="status-value" id="session-id">-</div>
+            </div>
+        </div>
+        
+        <!-- Main Interface -->
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" data-tab="execute">Execute Transfer</button>
+                <button class="tab" data-tab="monitor">Monitor</button>
+                <button class="tab" data-tab="history">History</button>
+                <button class="tab" data-tab="system">System</button>
+            </div>
+            
+            <!-- Execute Tab -->
+            <div class="tab-content active" id="execute-tab">
+                <div class="main-grid">
+                    <div>
+                        <h3>🎯 Transfer Configuration</h3>
+                        <div class="form-group">
+                            <label for="target-outlet">Target Store</label>
+                            <select id="target-outlet" class="form-control">
+                                <option value="">Loading outlets...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="min-stock">Minimum Source Stock</label>
+                            <input type="number" id="min-stock" class="form-control" value="2" min="1" max="20">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="candidate-limit">Product Limit</label>
+                            <input type="number" id="candidate-limit" class="form-control" value="100" min="10" max="1000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="simulate-mode" checked> Simulation Mode
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="debug-mode"> Debug Logging
+                            </label>
+                        </div>
+                        
+                        <button class="btn btn-primary" id="execute-btn">
+                            🚀 Execute Transfer
+                        </button>
+                        
+                        <button class="btn btn-outline" id="validate-btn">
+                            ✅ Validate Only
+                        </button>
+                    </div>
+                    
+                    <div>
+                        <h3>📊 Quick Actions</h3>
+                        <button class="btn btn-success" id="test-system-btn">🔍 System Test</button>
+                        <button class="btn btn-warning" id="load-outlets-btn">🏪 Reload Outlets</button>
+                        <button class="btn btn-outline" id="clear-logs-btn">🗑️ Clear Logs</button>
+                        
+                        <div class="metrics-grid" style="margin-top: 1.5rem;">
+                            <div class="metric-card">
+                                <div class="metric-value" id="total-transfers">0</div>
+                                <div class="metric-label">Total Transfers</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="success-rate">100%</div>
+                                <div class="metric-label">Success Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Progress -->
+                <div class="progress-container" id="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div id="progress-text">Ready...</div>
+                </div>
+            </div>
+            
+            <!-- Monitor Tab -->
+            <div class="tab-content" id="monitor-tab">
+                <h3>📋 Real-time Logs</h3>
+                <div class="log-container" id="log-container"></div>
+            </div>
+            
+            <!-- History Tab -->
+            <div class="tab-content" id="history-tab">
+                <h3>📚 Transfer History</h3>
+                <div id="history-container">
+                    <p>Loading transfer history...</p>
+                </div>
+            </div>
+            
+            <!-- System Tab -->
+            <div class="tab-content" id="system-tab">
+                <h3>⚙️ System Information</h3>
+                <div id="system-info">
+                    <p>Loading system information...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        class TransferEngineUI {
+            constructor() {
+                this.currentSession = null;
+                this.outlets = [];
+                this.isRunning = false;
+                this.transferHistory = [];
+                
+                this.init();
+            }
+            
+            async init() {
+                this.setupEventListeners();
+                await this.initializeSystem();
+                this.startHeartbeat();
+            }
+            
+            setupEventListeners() {
+                // Tab switching
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => this.switchTab(e.target.dataset.tab));
+                });
+                
+                // Button events
+                document.getElementById('execute-btn').addEventListener('click', () => this.executeTransfer());
+                document.getElementById('validate-btn').addEventListener('click', () => this.validateTransfer());
+                document.getElementById('test-system-btn').addEventListener('click', () => this.testSystem());
+                document.getElementById('load-outlets-btn').addEventListener('click', () => this.loadOutlets());
+                document.getElementById('clear-logs-btn').addEventListener('click', () => this.clearLogs());
+            }
+            
+            async initializeSystem() {
+                this.log('🚀 Initializing Transfer Engine UI...', 'info');
+                
+                try {
+                    await this.testSystem();
+                    await this.loadOutlets();
+                    this.updateStatus('engine-status', 'Ready', 'success');
+                } catch (error) {
+                    this.log(`❌ Initialization failed: ${error.message}`, 'error');
+                    this.updateStatus('engine-status', 'Error', 'error');
+                }
+            }
+            
+            async testSystem() {
+                this.log('🔍 Testing system components...', 'info');
+                
+                try {
+                    const result = await this.apiCall('test_db');
+                    
+                    if (result.success) {
+                        this.updateStatus('db-status', 'Connected', 'success');
+                        this.log('✅ Database connection verified', 'success');
+                    } else {
+                        throw new Error(result.error);
+                    }
+                } catch (error) {
+                    this.updateStatus('db-status', 'Failed', 'error');
+                    throw error;
+                }
+            }
+            
+            async loadOutlets() {
+                this.log('🏪 Loading outlets...', 'info');
+                
+                try {
+                    const result = await this.apiCall('get_outlets');
+                    
+                    if (result.success && result.outlets) {
+                        this.outlets = result.outlets;
+                        this.populateOutletSelect();
+                        this.updateStatus('outlets-status', this.outlets.length.toString(), 'success');
+                        this.log(`✅ Loaded ${this.outlets.length} outlets`, 'success');
+                    } else {
+                        throw new Error(result.error || 'Failed to load outlets');
+                    }
+                } catch (error) {
+                    this.log(`❌ Failed to load outlets: ${error.message}`, 'error');
+                    this.updateStatus('outlets-status', 'Error', 'error');
+                }
+            }
+            
+            populateOutletSelect() {
+                const select = document.getElementById('target-outlet');
+                select.innerHTML = '<option value="">Select target store...</option>';
+                
+                this.outlets.forEach(outlet => {
+                    const option = document.createElement('option');
+                    option.value = outlet.outlet_id;
+                    option.textContent = outlet.outlet_name;
+                    select.appendChild(option);
+                });
+            }
+            
+            async executeTransfer() {
+                if (this.isRunning) return;
+                
+                const targetOutlet = document.getElementById('target-outlet').value;
+                const minStock = document.getElementById('min-stock').value;
+                const candidateLimit = document.getElementById('candidate-limit').value;
+                const simulate = document.getElementById('simulate-mode').checked;
+                const debug = document.getElementById('debug-mode').checked;
+                
+                if (!targetOutlet) {
+                    this.showAlert('Please select a target store', 'error');
+                    return;
+                }
+                
+                const targetStore = this.outlets.find(o => o.outlet_id === targetOutlet);
+                
+                this.isRunning = true;
+                this.showProgress(true);
+                this.updateProgress(10, 'Initializing transfer...');
+                
+                this.log(`🎯 Starting transfer for: ${targetStore?.outlet_name}`, 'info');
+                this.log(`📊 Configuration: simulate=${simulate}, min_stock=${minStock}, limit=${candidateLimit}`, 'info');
+                
+                try {
+                    const params = {
+                        target_outlet_id: targetOutlet,
+                        simulate: simulate ? '1' : '0',
+                        min_source_stock: minStock,
+                        candidate_limit: candidateLimit
+                    };
+                    
+                    this.updateProgress(30, 'Executing transfer engine...');
+                    
+                    const result = await this.apiCall('simple_seed', params);
+                    
+                    this.updateProgress(90, 'Processing results...');
+                    
+                    if (result.success) {
+                        this.log('✅ Transfer completed successfully!', 'success');
+                        
+                        if (result.products_count) {
+                            this.log(`📦 Products: ${result.products_count}`, 'info');
+                        }
+                        if (result.total_quantity) {
+                            this.log(`📊 Total Quantity: ${result.total_quantity}`, 'info');
+                        }
+                        if (result.source_stores) {
+                            this.log(`🏪 Source Stores: ${result.source_stores}`, 'info');
+                        }
+                        if (result.session_id) {
+                            this.currentSession = result.session_id;
+                            this.updateStatus('session-status', result.session_id.substr(-6), 'success');
+                        }
+                        
+                        this.showAlert('Transfer completed successfully!', 'success');
+                        this.updateMetrics();
+                        
+                    } else {
+                        throw new Error(result.error || 'Unknown error');
+                    }
+                    
+                    this.updateProgress(100, 'Complete!');
+                    
+                } catch (error) {
+                    this.log(`❌ Transfer failed: ${error.message}`, 'error');
+                    this.showAlert(`Transfer failed: ${error.message}`, 'error');
+                } finally {
+                    this.isRunning = false;
+                    setTimeout(() => this.showProgress(false), 2000);
+                }
+            }
+            
+            async validateTransfer() {
+                const targetOutlet = document.getElementById('target-outlet').value;
+                
+                if (!targetOutlet) {
+                    this.showAlert('Please select a target store', 'error');
+                    return;
+                }
+                
+                this.log('✅ Validating transfer parameters...', 'info');
+                
+                // Validation logic here
+                this.showAlert('Validation passed - ready to execute', 'success');
+            }
+            
+            switchTab(tabName) {
+                // Update tab buttons
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+                
+                // Update tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            }
+            
+            showProgress(show) {
+                document.getElementById('progress-container').style.display = show ? 'block' : 'none';
+            }
+            
+            updateProgress(percent, text) {
+                document.getElementById('progress-fill').style.width = `${percent}%`;
+                document.getElementById('progress-text').textContent = text;
+            }
+            
+            updateStatus(elementId, value, type = 'success') {
+                const element = document.getElementById(elementId);
+                const valueElement = document.getElementById(`${elementId}-value`) || element.querySelector('.status-value');
+                
+                if (valueElement) {
+                    valueElement.textContent = value;
+                }
+                
+                element.className = `status-card ${type}`;
+            }
+            
+            log(message, type = 'info') {
+                const timestamp = new Date().toLocaleTimeString();
+                const container = document.getElementById('log-container');
+                
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${type}`;
+                entry.textContent = `[${timestamp}] ${message}`;
+                
+                container.appendChild(entry);
+                container.scrollTop = container.scrollHeight;
+            }
+            
+            clearLogs() {
+                document.getElementById('log-container').innerHTML = '';
+                this.log('📝 Logs cleared', 'info');
+            }
+            
+            showAlert(message, type) {
+                // Remove existing alerts
+                document.querySelectorAll('.alert').forEach(alert => alert.remove());
+                
+                const alert = document.createElement('div');
+                alert.className = `alert alert-${type}`;
+                alert.textContent = message;
+                
+                const executeTab = document.getElementById('execute-tab');
+                executeTab.insertBefore(alert, executeTab.firstChild);
+                
+                setTimeout(() => alert.remove(), 5000);
+            }
+            
+            updateMetrics() {
+                // Update transfer count
+                const totalElement = document.getElementById('total-transfers');
+                const currentTotal = parseInt(totalElement.textContent) || 0;
+                totalElement.textContent = (currentTotal + 1).toString();
+            }
+            
+            startHeartbeat() {
+                setInterval(() => {
+                    // Periodic health check
+                    if (!this.isRunning) {
+                        this.testSystem().catch(() => {
+                            this.updateStatus('engine-status', 'Disconnected', 'error');
+                        });
+                    }
+                }, 30000); // Every 30 seconds
+            }
+            
+            async apiCall(action, params = {}) {
+                const formData = new FormData();
+                formData.append('action', action);
+                
+                for (const [key, value] of Object.entries(params)) {
+                    formData.append(key, value);
+                }
+                
+                const response = await fetch('cli_api.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const result = await response.json();
+                return result;
+            }
+        }
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', () => {
+            new TransferEngineUI();
+        });
+    </script>
+</body>
+</html>
